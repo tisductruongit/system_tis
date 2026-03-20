@@ -125,6 +125,13 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+# Cách 1 (An toàn): Chỉ cho phép cổng Live Server của máy bạn
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+]
+
+# Cách 2 (Dùng tạm lúc test, sau này lên thật nhớ tắt): Cho phép tất cả
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Cấu hình đường dẫn lưu file Media (Ảnh, PDF Hợp đồng)
