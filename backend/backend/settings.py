@@ -137,4 +137,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = '/admin/login/'
 
 # Thêm dòng này vào cuối file settings.py
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost:8000']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost:8000','http://127.0.0.1:5500']
+ALLOWED_ORIGINS=['http://127.0.0.1:5500','http://localhost:5500','http://127.0.0.1:8000','http://localhost:8000']

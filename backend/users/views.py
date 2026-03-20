@@ -1,38 +1,52 @@
-from rest_framework import generics, permissions
-from .models import CustomUser
-from .serializers import UserRegistrationSerializer, UserProfileSerializer
+from rest_framework import generics, permissions, serializers
+from .models import CustomUser, BusinessEmployee
+from .serializers import (
+    UserRegistrationSerializer, 
+    UserProfileSerializer, 
+    BusinessEmployeeSerializer
+)
+# Import file quyền vừa tạo
+from .permissions import IsBusinessRole
 
-# API Đăng ký tài khoản
+# ==========================================
+# API ĐĂNG KÝ VÀ QUẢN LÝ PROFILE CÁ NHÂN
+# ==========================================
+
 class UserRegisterView(generics.CreateAPIView):
+    """API Đăng ký tài khoản (Ai cũng gọi được)"""
     queryset = CustomUser.objects.all()
     serializer_class = UserRegistrationSerializer
-    permission_classes = [permissions.AllowAny] # Cho phép bất kỳ ai cũng có thể gọi API này
+    permission_classes = [permissions.AllowAny]
 
-# API Xem và Cập nhật Profile
 class UserProfileView(generics.RetrieveUpdateAPIView):
+    """API Xem và Cập nhật Profile (Phải đăng nhập)"""
     serializer_class = UserProfileSerializer
-    permission_classes = [permissions.IsAuthenticated] # Bắt buộc phải đăng nhập (có token) mới được gọi
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        # Tự động lấy profile của chính người đang đăng nhập, không xem được của người khác
+        # Tự động trả về profile của chính người đang gọi API
         return self.request.user
 
 
-from rest_framework import serializers
-from .models import BusinessEmployee
-from .serializers import BusinessEmployeeSerializer
+# ==========================================
+# API DÀNH RIÊNG CHO DOANH NGHIỆP
+# ==========================================
 
-# API cho phép Doanh nghiệp xem danh sách và thêm nhân viên
 class BusinessEmployeeListCreateView(generics.ListCreateAPIView):
+    """
+    API Xem danh sách và Thêm nhân viên
+    Chỉ cho phép tài khoản Doanh nghiệp (role='business') truy cập
+    """
     serializer_class = BusinessEmployeeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    
+    # Áp dụng Custom Permission tại đây, DRF sẽ tự động chặn request ngay từ cửa
+    permission_classes = [IsBusinessRole]
 
     def get_queryset(self):
-        # Chỉ lấy danh sách nhân viên của chính doanh nghiệp đang đăng nhập
+        # Chỉ lấy danh sách nhân viên thuộc về doanh nghiệp đang gọi API
         return BusinessEmployee.objects.filter(business=self.request.user)
 
     def perform_create(self, serializer):
-        # Chốt chặn bảo mật: Chỉ user có role 'business' mới được thêm
-        if self.request.user.role != 'business':
-            raise serializers.ValidationError({"error": "Chỉ tài khoản Doanh nghiệp mới có quyền thêm nhân viên."})
-        serializer.save()
+        # Code giờ đây rất sạch, chỉ còn tập trung vào việc lưu data
+        # Hệ thống tự động gắn doanh nghiệp tạo ra nhân viên này là user đang đăng nhập
+        serializer.save(business=self.request.user)
