@@ -27,29 +27,25 @@ async function fetchProducts() {
     const productListDiv = document.getElementById('product-list');
     
     try {
-        const response = await fetch(`${BASE_URL}/products/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-                // Ở đây API danh sách sản phẩm cấu hình là AllowAny nên không cần nhét Token vào Header
-                // Tuy nhiên, nếu muốn backend biết ai đang gọi để ẩn/hiện provider_name, ta gửi kèm token:
-            }
-        });
-
-        // Thử gửi kèm token nếu có để Backend nhận diện quyền Admin
+        // Cấu hình headers, tự động kiểm tra và gắn Token nếu có
         const token = localStorage.getItem('access_token');
-        const headers = { 'Content-Type': 'application/json' };
+        const headers = { 
+            'Content-Type': 'application/json' 
+        };
+        
+        // Nếu có Token thì gắn vào để lấy thêm thông tin như provider_name
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         }
 
-        const authResponse = await fetch(`${BASE_URL}/products/`, {
+        // Chỉ thực hiện 1 lần gọi API duy nhất để tối ưu
+        const response = await fetch(`${BASE_URL}/products/`, {
             method: 'GET',
             headers: headers
         });
 
-        if (authResponse.ok) {
-            const products = await authResponse.json();
+        if (response.ok) {
+            const products = await response.json();
             productListDiv.innerHTML = ''; // Xóa chữ "Đang tải dữ liệu..."
 
             if (products.length === 0) {
@@ -91,12 +87,7 @@ async function fetchProducts() {
     }
 }
 
-// Hàm giả lập thêm vào giỏ hàng (sẽ viết API gọi thật ở bước sau)
-function addToCart(productId) {
-    alert(`Đã thêm sản phẩm ID ${productId} vào giỏ hàng!`);
-}
-
-
+// Hàm thêm vào giỏ hàng bằng API thực tế (đã xóa hàm giả lập)
 async function addToCart(productId) {
     const token = localStorage.getItem('access_token');
     if (!token) {
