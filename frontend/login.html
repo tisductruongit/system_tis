@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập - TIS Broker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-banner">
+            <div id="banner-slideshow" class="banner-slideshow">
+                <div class="banner-slide active" style="background-image: url('https://img.freepik.com/free-photo/business-people-shaking-hands-together_53876-20488.jpg');"></div>
+            </div>
+            <div class="auth-banner-overlay">
+                <img src="logo.jpg" alt="TIS Logo" class="auth-logo bg-white p-2 rounded mb-4" style="height: 60px;">
+                <h1>Giải pháp Bảo hiểm<br>Toàn diện cho Doanh nghiệp</h1>
+                <p>Quản lý hợp đồng, yêu cầu bồi thường và nhận tư vấn chuyên sâu ngay trên một nền tảng duy nhất.</p>
+                <div class="mt-4"><i class="fas fa-check-circle text-success me-2"></i> Bảo mật thông tin tuyệt đối</div>
+                <div class="mt-2"><i class="fas fa-check-circle text-success me-2"></i> Đội ngũ hỗ trợ 24/7</div>
+            </div>
+        </div>
+
+        <div class="auth-form-area">
+            <div class="mb-5">
+                <h3 class="fw-bold text-dark m-0">Đăng nhập hệ thống</h3>
+                <p class="text-muted mt-1">Chào mừng bạn quay lại TIS Broker</p>
+            </div>
+
+            <form id="login-form">
+                <div class="mb-3">
+                    <label class="fw-bold small mb-1">Tài khoản</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user text-muted"></i></span>
+                        <input type="text" id="username" class="form-control border-start-0 ps-0" placeholder="Số điện thoại / Username" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="fw-bold small mb-1">Mật khẩu</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock text-muted"></i></span>
+                        <input type="password" id="password" class="form-control border-start-0 border-end-0 ps-0" placeholder="Mật khẩu của bạn" required>
+                        <span class="input-group-text bg-white cursor-pointer toggle-password" onclick="togglePass()"><i class="fas fa-eye text-muted"></i></span>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-login" class="btn btn-primary w-100 p-3 fw-bold" style="background-color: #d71920; border-color: #d71920;">ĐĂNG NHẬP</button>
+                
+                <div class="text-center mt-4">
+                    <span class="text-muted">Chưa có tài khoản?</span> 
+                    <a href="register.html" class="text-danger text-decoration-none fw-bold">Đăng ký</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function togglePass() {
+            const pwd = document.getElementById('password');
+            pwd.type = pwd.type === 'password' ? 'text' : 'password';
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('btn-login');
+
+            try {
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang xử lý...';
+                btn.disabled = true;
+
+                // 1. Gọi API Token
+                const response = await fetch('http://127.0.0.1:8000/api/token/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('access_token', data.access);
+
+                    // 2. Gọi API Profile để phân luồng Admin/User
+                    const profileRes = await fetch('http://127.0.0.1:8000/api/users/profile/', {
+                        headers: { 'Authorization': `Bearer ${data.access}` }
+                    });
+
+                    if (profileRes.ok) {
+                        const profile = await profileRes.json();
+                        localStorage.setItem('username', profile.username);
+                        
+                        // LỄ TÂN PHÂN LUỒNG Ở ĐÂY:
+                        if (profile.is_staff === true || profile.is_superuser === true) {
+                            window.location.href = 'dashboard.html'; // Admin
+                        } else {
+                            window.location.href = 'index.html'; // Khách hàng
+                        }
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    Swal.fire('Lỗi', 'Sai tài khoản hoặc mật khẩu!', 'error');
+                }
+            } catch (error) {
+                Swal.fire('Lỗi', 'Không thể kết nối đến máy chủ!', 'error');
+            } finally {
+                btn.innerHTML = 'ĐĂNG NHẬP';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

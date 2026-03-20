@@ -1,0 +1,125 @@
+{% extends "admin/login.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* 1. Đặt nền trang và căn giữa toàn bộ form */
+    body.login {
+        background-color: #f4f7f6 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* 2. Ẩn thanh Header màu xanh mặc định và nút Dark Mode vô duyên của Django */
+    #header {
+        display: none !important;
+    }
+
+    /* 3. Xóa các giới hạn của Container mặc định */
+    #container {
+        width: 100% !important;
+        max-width: 420px !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        min-width: unset !important;
+    }
+    #content {
+        padding: 0 !important;
+    }
+
+    /* 4. Khung form đăng nhập chính */
+    #content-main {
+        background: #ffffff !important;
+        padding: 40px 30px 30px 30px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+        border-top: 6px solid #d71920 !important; /* Viền đỏ TIS ở trên cùng */
+        float: none !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 5. Tiêu đề form (Thay thế cho Header cũ) */
+    #content-main::before {
+        content: 'QUẢN TRỊ TIS BROKER';
+        display: block;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+    }
+
+    /* 6. Chỉnh sửa ô Input */
+    .form-row {
+        padding: 0 !important;
+        margin-bottom: 20px !important;
+        border: none !important;
+    }
+    .form-row label {
+        display: block;
+        font-weight: 600 !important;
+        color: #555 !important;
+        margin-bottom: 8px !important;
+        font-size: 13px !important;
+    }
+    .form-row input[type="text"],
+    .form-row input[type="password"] {
+        width: 100% !important;
+        padding: 12px 15px !important;
+        border: 1px solid #ddd !important;
+        border-radius: 6px !important;
+        font-size: 14px !important;
+        box-sizing: border-box !important;
+        background-color: #fcfcfc !important;
+        transition: all 0.3s !important;
+    }
+    .form-row input:focus {
+        border-color: #d71920 !important;
+        background-color: #fff !important;
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(215, 25, 32, 0.1) !important;
+    }
+
+    /* 7. Chỉnh sửa nút Submit */
+    .submit-row {
+        padding: 0 !important;
+        margin: 20px 0 0 0 !important;
+        border: none !important;
+        background: transparent !important;
+    }
+    .submit-row input[type="submit"] {
+        background-color: #d71920 !important;
+        color: white !important;
+        width: 100% !important;
+        padding: 14px !important;
+        border: none !important;
+        border-radius: 6px !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        cursor: pointer !important;
+        transition: background 0.3s !important;
+    }
+    .submit-row input[type="submit"]:hover {
+        background-color: #b0151a !important;
+    }
+
+    /* 8. Thông báo lỗi đẹp hơn */
+    .errornote {
+        border-radius: 6px !important;
+        font-size: 13px !important;
+        background-color: #fdeceb !important;
+        color: #d71920 !important;
+        border: 1px solid #facccf !important;
+        margin-bottom: 20px !important;
+    }
+</style>
+{% endblock %}

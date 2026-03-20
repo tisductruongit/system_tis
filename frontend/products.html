@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Gói Bảo Hiểm - TIS Broker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/common.css">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <link rel="stylesheet" href="css/product.css">
+</head>
+<body style="background-color: #f8f9fa;">
+    
+    <nav class="navbar navbar-expand-lg bg-white sticky-top py-2" style="box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="logo.jpg" alt="TIS Logo" style="height: 50px; object-fit: contain;">
+                <span class="ms-2 fw-bold text-danger d-none d-md-block" style="font-size: 14px; font-style: italic;">Mua bảo hiểm thì ghé TIS nhé</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link text-danger fw-bold active" href="products.html">Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="cart.html">Giỏ Hàng</a>
+                    </li>
+                    <li class="nav-item ms-lg-2" id="auth-section">
+                        </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <div class="category-sidebar sticky-top" style="top: 100px;">
+                    <div class="category-header"><i class="fas fa-list-ul"></i> DANH MỤC SẢN PHẨM</div>
+                    <ul class="category-list">
+                        <li class="category-item"><a href="#" class="category-link active" onclick="loadAllProducts('all', event)">Tất cả gói bảo hiểm <i class="fas fa-chevron-right small"></i></a></li>
+                        <li class="category-item"><a href="#" class="category-link" onclick="loadAllProducts('individual', event)">Bảo hiểm Cá nhân <i class="fas fa-chevron-right small"></i></a></li>
+                        <li class="category-item"><a href="#" class="category-link" onclick="loadAllProducts('business', event)">Bảo hiểm Doanh nghiệp <i class="fas fa-chevron-right small"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <h3 class="fw-bold mb-4" style="color: #333;">Khám phá Gói Bảo Hiểm</h3>
+                <div class="row g-4" id="all-products-grid">
+                    <div class="col-12 text-center py-5">
+                        <div class="spinner-border text-danger"></div>
+                        <p class="text-muted mt-2">Đang tải sản phẩm...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const BASE_URL = 'http://127.0.0.1:8000/api';
+
+        document.addEventListener("DOMContentLoaded", () => {
+            updateAuthLink();
+            loadAllProducts('all');
+        });
+
+        // 1. Quản lý Header
+        function updateAuthLink() {
+            const token = localStorage.getItem('access_token');
+            const authSection = document.getElementById('auth-section');
+            if (token) {
+                const username = localStorage.getItem('username') || 'Khách hàng';
+                authSection.innerHTML = `
+                    <div class="dropdown">
+                        <button class="btn btn-danger rounded-pill px-4 dropdown-toggle fw-bold" type="button" id="userMenu" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i> Xin chào, ${username}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><a class="dropdown-item py-2" href="profile.html"><i class="fas fa-id-card me-2 text-muted"></i>Hồ sơ của tôi</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger py-2 fw-bold" href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                authSection.innerHTML = `<a class="btn btn-outline-danger rounded-pill px-4" href="login.html">Đăng Nhập</a>`;
+            }
+        }
+        
+        function handleLogout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+        // 2. Load Danh sách Sản phẩm
+        async function loadAllProducts(filter, event) {
+            const container = document.getElementById('all-products-grid');
+            container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-danger"></div></div>';
+            
+            if(event) {
+                document.querySelectorAll('.category-link').forEach(link => link.classList.remove('active'));
+                event.currentTarget.classList.add('active');
+            }
+
+            try {
+                let url = `${BASE_URL}/products/`;
+                if (filter !== 'all') url += `?target=${filter}`;
+
+                const response = await fetch(url);
+                if (response.ok) {
+                    const products = await response.json();
+                    container.innerHTML = products.length === 0 ? '<div class="col-12 text-center py-5"><p class="text-muted fs-5">Chưa có gói bảo hiểm nào trong mục này.</p></div>' : '';
+                    
+                    products.forEach(product => {
+                        const priceNum = Number(product.price) || 0;
+                        const priceStr = priceNum > 0 ? `${priceNum.toLocaleString('vi-VN')} đ` : 'Liên hệ';
+                        const badgeText = product.target === 'individual' ? 'Cá nhân' : 'Doanh nghiệp';
+                        const imgUrl = product.image || 'https://img.freepik.com/free-vector/health-insurance-concept_23-2148466601.jpg';
+
+                        container.innerHTML += `
+                            <div class="col-md-6 col-lg-4 product-item-col">
+                                <div class="product-card h-100">
+                                    <div class="product-img-wrapper">
+                                        <span class="badge-category">${badgeText}</span>
+                                        <img src="${imgUrl}" alt="${product.name}">
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="product-title"><a href="#">${product.name}</a></h5>
+                                        <p class="product-desc mb-4">${product.description}</p>
+                                        <div class="mt-auto">
+                                            <div class="card-footer-custom pt-3 border-top">
+                                                <span class="price-section">${priceStr}</span>
+                                            </div>
+                                            <button class="btn btn-danger w-100 mt-3 fw-bold rounded-3" onclick="addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${priceNum}, '${imgUrl}')">
+                                                <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (error) { container.innerHTML = '<p class="text-danger text-center w-100">Lỗi kết nối máy chủ.</p>'; }
+        }
+
+        // 3. Logic thêm vào Giỏ hàng
+        function addToCart(id, name, price, image) {
+            if(price === 0) { alert("Gói bảo hiểm này cần liên hệ trực tiếp với chuyên viên tư vấn!"); return; }
+            
+            // Yêu cầu đăng nhập trước khi mua
+            if (!localStorage.getItem('access_token')) {
+                alert("Vui lòng đăng nhập tài khoản trước khi thêm vào giỏ hàng!");
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            let cart = JSON.parse(localStorage.getItem('tis_cart') || '[]');
+            cart.push({ id, name, price, image });
+            localStorage.setItem('tis_cart', JSON.stringify(cart));
+            
+            // Chuyển sang giỏ hàng
+            window.location.href = 'cart.html';
+        }
+    </script>
+</body>
+</html>
