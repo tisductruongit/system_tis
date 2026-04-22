@@ -5,73 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TIS Insurance Broker - Giải pháp bảo hiểm toàn diện</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
-    <style>
-        :root { --primary-color: #d71920; --primary-hover: #b0151a; --text-color: #333333; }
-        body { font-family: 'Be Vietnam Pro', sans-serif; color: var(--text-color); overflow-x: hidden; background-color: #f8f9fa; }
-        .text-danger { color: var(--primary-color) !important; }
-        .bg-danger { background-color: var(--primary-color) !important; }
-        .btn-danger { background-color: var(--primary-color); border-color: var(--primary-color); color: white; }
-        .btn-danger:hover { background-color: var(--primary-hover); }
-        .divider-red { width: 50px; height: 4px; background: var(--primary-color); border-radius: 2px; margin: 10px 0; }
-        .navbar { box-shadow: 0 2px 10px rgba(0,0,0,0.05); background: white; }
-        .nav-link { font-weight: 600; color: #444; }
-        .nav-link:hover { color: var(--primary-color); }
-        .card-custom { border: 1px solid #eee; border-radius: 12px; transition: all 0.3s; height: 100%; display: flex; flex-direction: column; background: white;}
-        .card-custom:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: #facccf; }
-        
-        /* Chat AI Box */
-        #mini-chat-box { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; box-shadow: 0 4px 15px rgba(215, 25, 32, 0.4); z-index: 1000; transition: transform 0.2s; }
-        #mini-chat-box:hover { transform: scale(1.1); }
-        #ai-chat-window { position: fixed; bottom: 90px; right: 20px; width: 350px; height: 450px; background: white; border-radius: 10px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column; z-index: 1000; border: 1px solid #ddd; }
-        .chat-header { background: var(--primary-color); color: white; padding: 15px; display: flex; justify-content: space-between; font-weight: bold; }
-        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
-        .message { max-width: 80%; padding: 10px; border-radius: 15px; font-size: 14px; }
-        .ai-message { background: white; border: 1px solid #ddd; align-self: flex-start; border-bottom-left-radius: 0; }
-        .user-message { background: #333; color: white; align-self: flex-end; border-bottom-right-radius: 0; }
-        .chat-footer { display: flex; padding: 10px; border-top: 1px solid #ddd; }
-        .chat-footer input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 20px; outline: none; }
-        .chat-footer button { background: var(--primary-color); color: white; border: none; padding: 8px 15px; margin-left: 10px; border-radius: 20px; }
-    </style>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top py-2">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <img src="logo.jpg" alt="TIS Logo" height="40">
-                <span class="ms-2 fw-bold text-danger d-none d-md-block" style="font-size: 14px; font-style: italic;">Mua bảo hiểm thì ghé TIS nhé</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center gap-3">
-                    <li class="nav-item"><a class="nav-link" href="products.html">Sản Phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="cart.html">Giỏ Hàng</a></li>
-                    <li class="nav-item" id="auth-section">
-                        <a class="btn btn-outline-danger rounded-pill px-4" href="login.html">Đăng Nhập</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+    <header id="header-placeholder"></header>
 
     <main>
-        <section class="hero-section bg-white">
+        <section class="hero-section">
             <div class="container">
-                <div class="row align-items-center min-vh-100 py-5">
+                <div class="row align-items-center min-vh-100 pt-5">
                     <div class="col-lg-6" data-aos="fade-right">
                         <span class="badge bg-danger mb-3 px-3 py-2 rounded-pill shadow-sm">UY TÍN HÀNG ĐẦU</span>
                         <h1 class="display-3 fw-bold text-dark lh-sm">An tâm vững bước<br><span class="text-danger">Cùng TIS Broker</span></h1>
                         <p class="lead text-secondary my-4">Giải pháp bảo hiểm tối ưu cho Doanh nghiệp & Cá nhân với quy trình số hóa 100%, minh bạch.</p>
-                        <a href="products.html" class="btn btn-danger btn-lg rounded-pill px-5 fw-bold shadow">Mua ngay</a>
+                        <div class="d-flex gap-3">
+                            <a href="#products" class="btn btn-danger btn-lg rounded-pill px-5 fw-bold shadow">Mua ngay</a>
+                            <a href="#about" class="btn btn-outline-dark btn-lg rounded-pill px-4">Liên hệ</a>
+                        </div>
                     </div>
                     <div class="col-lg-6 d-none d-lg-block" data-aos="zoom-in">
-                        <img src="https://img.freepik.com/free-vector/family-protection-concept-illustration_114360-5431.jpg" alt="TIS Broker" class="img-fluid rounded-4 shadow-sm">
+                        <div class="hero-image-container text-center">
+                            <img src="https://img.freepik.com/free-vector/family-protection-concept-illustration_114360-5431.jpg" alt="TIS Broker" class="img-fluid rounded-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5 bg-white" id="about">
+            <div class="container py-4">
+                <div class="row g-4 text-center">
+                    <div class="col-md-4" data-aos="fade-up">
+                        <div class="p-4 h-100 rounded-4 shadow-sm border-0">
+                            <i class="fas fa-bolt text-danger fs-1 mb-3"></i>
+                            <h5 class="fw-bold">Nhanh chóng</h5>
+                            <p class="text-muted small">Quy trình cấp đơn trực tuyến chỉ trong vài phút.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="p-4 h-100 rounded-4 shadow-sm border-0">
+                            <i class="fas fa-hand-holding-heart text-danger fs-1 mb-3"></i>
+                            <h5 class="fw-bold">Tận tâm</h5>
+                            <p class="text-muted small">Chuyên gia tư vấn giải pháp phù hợp với ngân sách.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="p-4 h-100 rounded-4 shadow-sm border-0">
+                            <i class="fas fa-check-double text-danger fs-1 mb-3"></i>
+                            <h5 class="fw-bold">Minh bạch</h5>
+                            <p class="text-muted small">Điều khoản và quy trình bồi thường rõ ràng, không ẩn phí.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,18 +74,16 @@
         <section class="py-5 bg-light" id="products">
             <div class="container py-5">
                 <div class="text-center mb-5" data-aos="fade-up">
-                    <h2 class="fw-bold display-6">Giải pháp Bảo hiểm</h2>
+                    <h2 class="fw-bold display-6">Sản phẩm nổi bật</h2>
+                    <p class="text-muted">Chọn gói bảo hiểm phù hợp nhất để bảo vệ tương lai của bạn</p>
                     <div class="divider-red mx-auto mt-2"></div>
                 </div>
                 
-                <h4 class="mb-4 fw-bold text-dark" data-aos="fade-right">Dành cho Cá Nhân</h4>
-                <div class="row g-4 mb-5" id="individual-products">
-                    <div class="col-12 text-center"><div class="spinner-border text-danger"></div></div>
-                </div>
-
-                <h4 class="mb-4 fw-bold text-dark" data-aos="fade-right">Dành cho Doanh Nghiệp</h4>
-                <div class="row g-4" id="business-products">
-                    <div class="col-12 text-center"><div class="spinner-border text-danger"></div></div>
+                <div class="row g-4" id="product-list">
+                    <div class="col-12 text-center py-5">
+                        <div class="spinner-border text-danger"></div>
+                        <p class="text-muted mt-2">Đang tải sản phẩm...</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -99,141 +91,32 @@
         <section class="py-5 bg-white" id="news">
             <div class="container py-5">
                 <div class="d-flex justify-content-between align-items-end mb-4" data-aos="fade-up">
-                    <div><h2 class="fw-bold m-0">Tin tức & Sự kiện</h2><div class="divider-red mt-2"></div></div>
+                    <div>
+                        <h2 class="fw-bold m-0">Tin tức & Sự kiện</h2>
+                        <div class="divider-red mt-2"></div>
+                    </div>
+                    <a href="news.html" class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold">Xem tất cả</a>
                 </div>
+                
                 <div class="row g-4" id="news-list">
-                    <div class="col-12 text-center"><div class="spinner-border text-danger"></div></div>
+                    <div class="col-12 text-center py-4">
+                        <div class="spinner-grow text-danger border-0" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="mini-chat-box" onclick="toggleChat()">💬</div>
-    <div id="ai-chat-window" style="display: none;">
-        <div class="chat-header"><span>TIS AI Assistant</span><button onclick="toggleChat()" style="background:none; border:none; color:white;">✖</button></div>
-        <div class="chat-body" id="chat-body"><div class="message ai-message">Xin chào! Tôi là trợ lý AI của TIS Broker. Tôi có thể giúp gì cho bạn?</div></div>
-        <div class="chat-footer"><input type="text" id="chat-input" placeholder="Nhập câu hỏi..." onkeypress="if(event.key === 'Enter') sendMessage()"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button></div>
-    </div>
+    <footer id="footer-placeholder"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 800, once: true });
-        const BASE_URL = 'http://127.0.0.1:8000/api';
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="js/common.js"></script>  <script src="js/layout.js"></script>  <script src="js/home.js"></script>    
 
-        document.addEventListener("DOMContentLoaded", () => {
-            updateAuthLink();
-            loadProductsByTarget('individual', 'individual-products');
-            loadProductsByTarget('business', 'business-products');
-            loadNews();
-        });
 
-        // 1. Quản lý Header (Menu Dropdown)
-        function updateAuthLink() {
-            const token = localStorage.getItem('access_token');
-            const authSection = document.getElementById('auth-section');
 
-            if (token) {
-                const username = localStorage.getItem('username') || 'Khách hàng';
-                authSection.innerHTML = `
-                    <div class="dropdown">
-                        <button class="btn btn-danger rounded-pill px-4 dropdown-toggle fw-bold" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user-circle me-1"></i> Xin chào, ${username}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="userMenu">
-                            <li><a class="dropdown-item py-2" href="profile.html"><i class="fas fa-id-card me-2 text-muted"></i>Hồ sơ của tôi</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger py-2 fw-bold" href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
-                        </ul>
-                    </div>
-                `;
-            }
-        }
 
-        function handleLogout() {
-            localStorage.clear();
-            window.location.href = 'index.html';
-        }
-
-        // 2. Load Dữ liệu
-        async function loadProductsByTarget(targetType, containerId) {
-            const container = document.getElementById(containerId);
-            try {
-                const response = await fetch(`${BASE_URL}/products/?target=${targetType}`);
-                if (response.ok) {
-                    const products = await response.json();
-                    container.innerHTML = products.length === 0 ? '<p class="text-muted">Chưa có gói bảo hiểm.</p>' : '';
-                    products.slice(0, 4).forEach((product, index) => {
-                        const priceStr = product.price ? `${Number(product.price).toLocaleString('vi-VN')} đ` : 'Liên hệ';
-                        container.innerHTML += `
-                            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="${index * 100}">
-                                <div class="card-custom">
-                                    <div class="p-3">
-                                        <span class="badge bg-danger mb-2">${targetType === 'individual' ? 'Cá nhân' : 'Doanh nghiệp'}</span>
-                                        <h5 class="fw-bold text-dark text-truncate">${product.name}</h5>
-                                        <p class="text-muted small" style="height: 40px; overflow: hidden;">${product.description}</p>
-                                        <h4 class="text-danger fw-bold mt-3">${priceStr}</h4>
-                                    </div>
-                                    <div class="mt-auto p-3 border-top">
-                                        <a href="products.html" class="btn btn-outline-danger w-100 fw-bold">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            } catch (error) { container.innerHTML = '<p class="text-danger">Lỗi kết nối máy chủ.</p>'; }
-        }
-
-        async function loadNews() {
-            const container = document.getElementById('news-list');
-            try {
-                const response = await fetch(`${BASE_URL}/products/news/`);
-                if (response.ok) {
-                    const newsList = await response.json();
-                    container.innerHTML = '';
-                    newsList.slice(0, 3).forEach((news, index) => {
-                        container.innerHTML += `
-                            <div class="col-md-4" data-aos="fade-up" data-aos-delay="${index * 100}">
-                                <div class="card-custom p-4 border-top border-danger border-4">
-                                    <h5 class="fw-bold">${news.title}</h5>
-                                    <p class="mt-3 text-secondary small">${news.content.substring(0, 80)}...</p>
-                                    <a href="#" class="text-danger fw-bold text-decoration-none mt-auto">Đọc tiếp <i class="fas fa-arrow-right ms-1"></i></a>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            } catch (error) {}
-        }
-
-        // 3. Logic Chat AI
-        function toggleChat() {
-            const w = document.getElementById('ai-chat-window');
-            w.style.display = w.style.display === 'none' ? 'flex' : 'none';
-        }
-        async function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const msg = input.value.trim();
-            if (!msg) return;
-            const chatBody = document.getElementById('chat-body');
-            chatBody.innerHTML += `<div class="message user-message">${msg}</div>`;
-            input.value = '';
-            
-            const typingId = 'typing-' + Date.now();
-            chatBody.innerHTML += `<div id="${typingId}" class="text-muted small fst-italic">AI đang suy nghĩ...</div>`;
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            try {
-                const res = await fetch(`${BASE_URL}/chat/ask/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
-                document.getElementById(typingId).remove();
-                if (res.ok) {
-                    const data = await res.json();
-                    chatBody.innerHTML += `<div class="message ai-message shadow-sm">${data.reply}</div>`;
-                }
-            } catch (e) { document.getElementById(typingId).remove(); }
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-    </script>
 </body>
 </html>
